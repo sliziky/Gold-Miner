@@ -41,7 +41,7 @@
 *.pdb
 *.json
 *.ninja*
-*.txt
+
 
 ### CMake ###
 CMakeLists.txt.user
