@@ -21,7 +21,6 @@ int main() {
 		if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) ) {
 			movement.x += 5.f;
 			player.move( movement );
-			window.draw( player._sprites[i] );
 		}
 		else {
 			window.draw( player._sprites[ 0 ] );
@@ -30,8 +29,7 @@ int main() {
 		
 		window.display();
 		// Display window contents on screen
-		++i;
-		if ( i == 9 ) i = 0;
+
 		
 	}
 
