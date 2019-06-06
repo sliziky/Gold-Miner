@@ -1,4 +1,3 @@
-# Gold-Miner
 # Gold Miner
 
 Gold Miner is a 2D game written in SFML/C++.
