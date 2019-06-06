@@ -1,0 +1,6 @@
+- add (so far) basic player movement and sprite drawing
+- add physics
+- how to generate map
+- how to represent map
+- game tick
+- git -> branches

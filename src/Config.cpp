@@ -3,35 +3,12 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
+#include "Config.h"
+
 using namespace std::chrono_literals;
 
-namespace Config::Window 
-{
-	const uint16_t width    = 640;
-	const uint16_t height   = 480;
-	const std::string title = "Gold Miner";
-}
+const sf::Vector2f Config::Player::scale = { .15f, .15f };
 
-namespace Config::Player
-{
-	const sf::Vector2f max_player_speed = { 5.f, 5.f };
-}
-
-namespace Config::Inventory
-{
-	const uint8_t inventory_on_screen = 8;
-	const uint8_t inventory_total     = 128;
-	const uint8_t stack				  = 32;
-}
-
-namespace Config::Map
-{
-	const uint16_t width = 256;
-	const uint8_t depth = 64;
-}
-
-namespace Config::Tick
-{
-	const uint16_t day_ticks				  = 24000;
-	const std::chrono::milliseconds tick_time = 5ms;
-}
+const uint16_t Config::Window::width = 640;
+const uint16_t Config::Window::height   = 480;
+const std::string Config::Window::title = "Gold Miner";
