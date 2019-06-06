@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ ! -f `pwd`/build/src/GoldMiner ]; then
+    echo "GoldMiner file not found. Run 'install' script first."
+    exit 1
+fi
 cd build
 cd src
 ./GoldMiner
