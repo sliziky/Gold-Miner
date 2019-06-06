@@ -36,6 +36,13 @@
 *.out
 *.app
 
+# Added
+*.ilk
+*.pdb
+*.json
+*.ninja*
+*.txt
+
 ### CMake ###
 CMakeLists.txt.user
 CMakeCache.txt
