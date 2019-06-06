@@ -6,7 +6,7 @@ project(GoldMinerTests)
 set(CMAKE_CXX_STANDARD 11)
 
 ## compiler flags
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GCC" OR
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(warnings "-Wall -Wextra -Werror")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
