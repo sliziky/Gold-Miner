@@ -3,7 +3,6 @@
 # Edit at https://www.gitignore.io/?templates=c++,cmake
 
 ### C++ ###
-*.png
 # Prerequisites
 *.d
 
