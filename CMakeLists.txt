@@ -1,21 +1,36 @@
-#sets up the minimum version of cmake
-cmake_minimum_required(VERSION 3.9) # personally I'd set this version as low as required; you don't have to require the cutting edge version
+cmake_minimum_required(VERSION 3.1)
 
-#how the project will be called
-project (space_impact)
+project(GoldMiner)
 
-#set the C++ standard to be used
-set (CMAKE_CXX_STANDARD 17)
+## c++11
+set(CMAKE_CXX_STANDARD 11)
 
-#set source files
-set (SOURCE_FILES main.cpp)
+## compiler flags
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GCC" OR
+    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(warnings "-Wall -Wextra -Werror")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    set(warnings "/W4 /Wall /EHsc")
+endif()
 
-#look for SFML and add it
-set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/SFML/cmake-modules/")
-find_package (SFML REQUIRED system window graphics network audio)
 
-include_directories(${SFML_INCLUDE_DIR})
+set(SFML_DIR "C:/SFML-2.5.1-x64/lib/cmake/SFML")
+set(PROJECT_SOURCE_DIR "C:/Users/Peter/Source/Repos/Gold-Miner/")
 
-#we add the executable of the program
-add_executable (space_impact ${SOURCE_FILES})
-target_link_libraries(space_impact ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+include_directories(
+		${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/src
+)
+
+
+file(GLOB src
+        "${PROJECT_SOURCE_DIR}/include/*.h"
+		"${PROJECT_SOURCE_DIR}/include/*.hpp"
+        "${PROJECT_SOURCE_DIR}/src/*.cpp"
+        "${PROJECT_SOURCE_DIR}/src/*.c"
+        )
+
+## find SFML 
+find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+add_executable(${PROJECT_NAME} ${src})
+target_link_libraries(GoldMiner sfml-system sfml-window sfml-graphics sfml-network sfml-audio ${SFML_DEPENDENCIES})
