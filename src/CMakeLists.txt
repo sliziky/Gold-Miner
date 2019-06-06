@@ -1,20 +1,28 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 
 project(GoldMiner)
 
-## c++11
-set(CMAKE_CXX_STANDARD 11)
+## c++17
+set(CMAKE_CXX_STANDARD 17)
 
 ## compiler flags
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(warnings "-Wall -Wextra -Werror")
+    set(warnings "-Wall -Wextra -Werror -std=c++17")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    set(warnings "/W4 /Wall /EHsc")
+    set(warnings "/W4 /Wall /EHsc /std:c++17")
 endif()
 
 
-set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../SFML-2.5.1/lib/cmake/SFML)
+
+if (WIN32)
+    set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../SFML-2.5.1-x64/lib/cmake/SFML)
+endif (WIN32)
+
+if (UNIX)
+    set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../SFML-2.5.1/lib/cmake/SFML)
+endif (UNIX)
+
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
 include_directories(

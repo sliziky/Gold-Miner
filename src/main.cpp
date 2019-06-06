@@ -1,9 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include "Player.hpp"
+
+#include "Player.h"
+#include "Config.cpp"
+
 int main() {
-	sf::RenderWindow window( sf::VideoMode( 200, 200 ), "SFML works!" );
-	sf::CircleShape shape( 100.f );
-	shape.setFillColor( sf::Color::Green );
+	sf::RenderWindow window( sf::VideoMode( Config::Window::width, Config::Window::height ), Config::Window::title, sf::Style::Titlebar | sf::Style::Default );
+
+
 	while ( window.isOpen() ) {
 		sf::Event event;
 		while ( window.pollEvent( event ) ) {
@@ -11,7 +14,6 @@ int main() {
 				window.close();
 		}
 		window.clear();
-		window.draw( shape );
 		window.display();
 	}
 
