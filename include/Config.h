@@ -5,14 +5,34 @@
 
 struct Config {
 	struct Player {
-		//static const sf::Vector2f max_player_speed;
+		static const sf::Vector2f speed;
 		static const sf::Vector2f scale;
+		static const uint8_t sheet_size;
 	};
 
 	struct Window {
 		static const uint16_t width;
 		static const uint16_t height;
 		static const std::string title;
+	};
+
+	struct View {
+		static const float speed;
+	};
+
+	struct Path {
+		static const std::string background;
+		static const std::string player_sprite;
+	};
+
+	struct Background {
+		static const uint16_t width;
+		static const uint16_t height;
+	};
+
+	struct Borders {
+		static const uint16_t left;
+		static const uint16_t right;
 	};
 
 };

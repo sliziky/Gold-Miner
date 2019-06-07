@@ -16,7 +16,7 @@ endif()
 
 
 if (WIN32)
-    set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../SFML-2.5.1-x64/lib/cmake/SFML)
+    set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../SFML-2.5.1-x64/lib/cmake/SFML)
 endif (WIN32)
 
 if (UNIX)
@@ -28,6 +28,7 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 include_directories(
 		${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/src
+		${PROJECT_SOURCE_DIR}/thirdparty
 )
 
 
@@ -36,6 +37,8 @@ file(GLOB src
 	    "${PROJECT_SOURCE_DIR}/include/*.hpp"
         "${PROJECT_SOURCE_DIR}/src/*.cpp"
         "${PROJECT_SOURCE_DIR}/src/*.c"
+		"${PROJECT_SOURCE_DIR}/thirdparty/animation/src/*.cpp"
+		"${PROJECT_SOURCE_DIR}/thirdparty/animation/src/*.h"
         )
 
 ## find SFML 
