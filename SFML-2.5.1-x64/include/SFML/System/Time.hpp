@@ -477,7 +477,7 @@ SFML_SYSTEM_API Time& operator %=(Time& left, Time right);
 /// \code
 /// void update(sf::Time elapsed)
 /// {
-///    position += speed * elapsed.asSeconds();
+///    position += acceleration * elapsed.asSeconds();
 /// }
 ///
 /// update(sf::milliseconds(100));

@@ -1,15 +1,15 @@
 #include "..\include\Animations.h"
 #include "Config.h"
 Animations::Animations()
-	: m_animated_sprite( sf::seconds( 0.2 ), true, false )
+	: m_animated_sprite( sf::seconds( Config::Animations::speed ), false, true )
 	, sheet_size( Config::Player::sheet_size )
 {
 	//TODO error while loading
 	m_player_texture.loadFromFile( "sheet.png" );
 
-	m_animated_sprite.setPosition( {(float) Config::Window::width / 2, 
-									  (float) Config::Window::height - 64} 
-								 );
+	m_animated_sprite.setPosition({ static_cast< float > (Config::Window::width / 2), 
+									static_cast< float > (Config::Window::height - Config::Player::in_game_size)
+								   });
 	m_animated_sprite.setScale( Config::Player::scale );
 
 	m_idle_animation.setSpriteSheet( m_player_texture );

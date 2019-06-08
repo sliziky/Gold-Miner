@@ -2514,7 +2514,7 @@ namespace Catch {
 #if defined(CATCH_CONFIG_FAST_COMPILE) || defined(CATCH_CONFIG_DISABLE_EXCEPTIONS)
 
 ///////////////////////////////////////////////////////////////////////////////
-// Another way to speed-up compilation is to omit local try-catch for REQUIRE*
+// Another way to acceleration-up compilation is to omit local try-catch for REQUIRE*
 // macros.
 #define INTERNAL_CATCH_TRY
 #define INTERNAL_CATCH_CATCH( capturer )

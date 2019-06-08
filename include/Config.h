@@ -5,9 +5,10 @@
 
 struct Config {
 	struct Player {
-		static const sf::Vector2f speed;
+		static const sf::Vector2f acceleration;
 		static const sf::Vector2f scale;
 		static const uint8_t sheet_size;
+		static const uint8_t in_game_size;
 	};
 
 	struct Window {
@@ -17,7 +18,7 @@ struct Config {
 	};
 
 	struct View {
-		static const float speed;
+		static const float acceleration;
 	};
 
 	struct Path {
@@ -34,7 +35,20 @@ struct Config {
 		static const uint16_t left;
 		static const uint16_t right;
 	};
+	struct Physics {
+		static const uint8_t gravity;
+	};
+	struct Animations {
+		static const float speed;
+	};
+	struct Tiles {
+		static const sf::Vector2f scale;
+	};
 
+	struct Map {
+		static const uint16_t width;
+		static const uint16_t depth;
+	};
 };
 //
 //#include <chrono>

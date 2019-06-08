@@ -223,7 +223,7 @@ private:
 ///
 /// UDP is generally used for real-time communication
 /// (audio or video streaming, real-time games, etc.) where
-/// speed is crucial and lost data doesn't matter much.
+/// acceleration is crucial and lost data doesn't matter much.
 ///
 /// Sending and receiving data can use either the low-level
 /// or the high-level functions. The low-level functions
