@@ -12,7 +12,7 @@ public:
 	App()
 		: m_window( sf::VideoMode( Config::Window::width, Config::Window::height ), Config::Window::title, sf::Style::Default )
 		, m_view( sf::FloatRect( 0.f, 0.f, 640.f, 480.f ) ) 
-		, m_player( m_view )
+		, m_player( m_view, m_map )
 	{
 		m_window.setFramerateLimit( 60 );
 		m_window.setView( m_view );
@@ -23,9 +23,9 @@ public:
 	}
 
 	void run() {
-		sf::Clock frameClock;
-
+		// testing row
 		m_map.generate_row();
+
 		while ( m_window.isOpen() ) {
 			const auto& map = m_map.map();
 			sf::Event event;
@@ -35,16 +35,16 @@ public:
 				}
 			}
 			
-			sf::Time frameTime = frameClock.restart();
-			
+			sf::Time frameTime = m_frame_clock.restart();
+			// get input and move player
 			m_player.move();
-			auto& player_sprite = m_player.animations().animated_sprite();
 
+
+			// draw stuff
 			m_window.clear();
-
+			m_window.draw( m_sprite_background );
 			m_player.display_animation( frameTime );
 			m_window.setView( m_view );
-			m_window.draw( m_sprite_background );
 			for ( const auto& row : map ) {
 				for ( const auto& block : row ) {
 					m_window.draw( block->sprite() );
@@ -52,6 +52,7 @@ public:
 			}
 			m_window.draw( m_player.animations().animated_sprite() );
 			m_window.display();
+			sf::sleep( sf::milliseconds( 5 ) );
 		}
 	}
 private:
@@ -64,4 +65,5 @@ private:
 	std::vector< std::unique_ptr< IGameObject> > m_objects;
 	Map m_map;
 	GameObjectFactory m_factory;
+	sf::Clock m_frame_clock;
 };

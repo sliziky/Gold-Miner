@@ -1,9 +1,10 @@
 #include "Player.h"
 
-Player::Player( sf::View& view )
+Player::Player( sf::View& view, Map& map )
 	: m_is_moving( false ) 
 	, m_current( nullptr )
 	, m_view( view )
+	, m_map( map )
 {
 	m_current = m_animations.idle_animation();
 }
@@ -85,5 +86,14 @@ void Player::move() {
 		m_is_jumping = true;
 	}
 	move_up();
+	auto new_pos = m_animations.animated_sprite().getPosition() + m_velocity;
+	for ( const auto& object : m_map.map() ) {
+		for ( const auto& obj : object ) {
+			if ( obj->sprite().getGlobalBounds().contains( new_pos ) ) {
+				m_velocity = { 0,0 };
+				return;
+			}
+		}
+	}
 
 }
