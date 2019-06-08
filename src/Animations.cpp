@@ -1,4 +1,4 @@
-#include "Animations.h"
+#include "../include/Animations.h"
 #include "Config.h"
 Animations::Animations()
 	: m_animated_sprite( sf::seconds( Config::Animations::speed ), false, true )
