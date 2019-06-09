@@ -21,14 +21,14 @@ Animations::Animations()
 	}
 
 	for ( int i = 0; i < 8; ++i ) {
-		m_right_animation.addFrame( sf::IntRect( i * sheet_size, sheet_size, sheet_size, sheet_size ) );
+		m_right_animation.addFrame( sf::IntRect( i * sheet_size, 32, sheet_size, sheet_size ) );
 	}
 
 	for ( int i = 0; i < 8; ++i ) {
 		m_left_animation.addFrame( sf::IntRect( i * sheet_size, 288, sheet_size, sheet_size ) );
 	}
-
 }
+
 Animation* Animations::left_animation() {
 	return &m_left_animation;
 }

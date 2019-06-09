@@ -1,37 +1,60 @@
 
 #include <chrono>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 #include "Config.h"
 
 using namespace std::chrono_literals;
 
+//PLAYER
 const sf::Vector2f Config::Player::scale = { 2.f, 2.f };
 const sf::Vector2f Config::Player::acceleration = { 3.f, 9.f };
 const uint8_t Config::Player::sheet_size = 32;
-const uint8_t Config::Player::in_game_size = Config::Player::sheet_size * Config::Player::scale.x;
+const int Config::Player::in_game_size = Config::Player::sheet_size * Config::Player::scale.x;
+const sf::Vector3f Config::Player::from_player_border = { 12, 21, 22 };
 
+//WINDOW
 const uint16_t Config::Window::width = 640;
-const uint16_t Config::Window::height   = 480;
+const int Config::Window::height   = 480;
 const std::string Config::Window::title = "Gold Miner";
 
+//VIEW
 const float Config::View::acceleration = 3.f;
 
+//PATH
 const std::string Config::Path::background = "background.png";
 const std::string Config::Path::player_sprite = "sheet.png";
 
+//BACKGROUND
 const uint16_t Config::Background::width = 1280;
 const uint16_t Config::Background::height = 480;
 
+//BORDERS
 const uint16_t Config::Borders::left = -10;
 const uint16_t Config::Borders::right = Config::Background::width - Config::Player::in_game_size;
 
+//PHYSICS
 const uint8_t Config::Physics::gravity = 1;
 
+//ANIMATIONS
 const float Config::Animations::speed = 0.1f;
 
+//TILES
 const sf::Vector2f Config::Tiles::scale = { 0.25f, 0.25f };
 
+//MAP
 const uint16_t Config::Map::width = 40;
 const uint16_t Config::Map::depth = 64;
+const uint16_t Config::Map::ground = Config::Window::height - 2 * Config::Player::sheet_size;
+
+//BLOCK
+const uint8_t Config::Block::size = 32;
+
+//INVENTORY
+const uint8_t Config::Inventory::number_of_windows = 8;
+const sf::Vector2f Config::Inventory::window_size = { 32, 32 };
+const sf::Color Config::Inventory::fill_color = { 169,169,169 };
+const sf::Color Config::Inventory::outline_color = { 105, 105, 105 };
+const int Config::Inventory::thickness = 2;
