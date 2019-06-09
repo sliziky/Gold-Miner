@@ -50,12 +50,12 @@ public:
 
 
 			// draw stuff
-			rect.setPosition( m_player.position() );
-			rect.setOutlineColor( sf::Color::Blue );
-			rect.setOutlineThickness( 3 );
-			rect.setFillColor( sf::Color::Transparent );
-			rect.setSize( { (float)Config::Player::in_game_size, 
-						  (float)Config::Player::in_game_size } );
+			//rect.setPosition( m_player.position() );
+			//rect.setOutlineColor( sf::Color::Blue );
+			//rect.setOutlineThickness( 3 );
+			//rect.setFillColor( sf::Color::Transparent );
+			//rect.setSize( { (float)Config::Player::in_game_size, 
+			//			  (float)Config::Player::in_game_size } );
 
 
 
