@@ -4,3 +4,8 @@ mkdir build
 cd build
 cmake ..
 make
+if [ ! -d `pwd`/build/src ]; then
+    echo "GoldMiner file not found. Run 'install' script first."
+    exit 1
+fi
+cp * `pwd`/sprites `pwd`/build/src
