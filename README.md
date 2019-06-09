@@ -30,6 +30,7 @@ $ bash: ./SCRIPT_NAME: Permission denied
 $ chmod u+x SCRIPT_NAME
 ```
 ## Game Sample
+
 ![](game_sample.gif)
 
 
