@@ -7,7 +7,6 @@ Inventory::Inventory() {
 		m_windows[ i ].setFillColor( Config::Inventory::fill_color );
 		m_windows[ i ].setOutlineColor( Config::Inventory::outline_color );
 		m_windows[ i ].setOutlineThickness( Config::Inventory::thickness );
-		//m_windows[ i ].setPosition( { i * 42.f - Config::Window::width / 2 , 10.f } );
 	}
 	current = &m_windows[ current_pos ];
 	current->setOutlineColor( sf::Color::Red );

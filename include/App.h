@@ -1,14 +1,20 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
+#include <vector>
+
 #include "Player.h"
 #include "Config.h"
 #include "..//thirdparty/animation/src/AnimatedSprite.h"
-#include <vector>
 #include "GameObjectFactory.h"
 #include "Map.h"
+#include "Utils.h"
 #include "Inventory.h"
-#include <SFML/Audio.hpp>
+
+constexpr int DEBUG = 1;
+
 class App {
 public:
 	App()
@@ -23,60 +29,102 @@ public:
 		m_player_texture.loadFromFile( Config::Path::player_sprite );
 		m_sprite_background.setTexture( m_background );
 		m_sprite_background.setPosition( 0, 0 );
-		//m_music.openFromFile( "music.ogg" );
+		m_map.generate_map();
+
 	}
 
 	void run() {
 		// testing row
-		m_music.play();
-		m_map.generate_map();
 		sf::RectangleShape rect;
+		if constexpr ( DEBUG ) {
+			// draw rect around the player
+			rect.setOutlineColor( sf::Color::Blue );
+			rect.setOutlineThickness( 3 );
+			rect.setFillColor( sf::Color::Transparent );
+			rect.setSize( { (float)Config::Player::size.x,
+						  (float)Config::Player::size.y } );
+		}
 		while ( m_window.isOpen() ) {
-			const auto& map = m_map.map();
+
+			// for mouse wheel detection
 			auto mouse_moved = 0;
+			sf::Vector2i mouse_click_pos = { 0, 0 };
+			bool mouse_clicked = false;
+
 			sf::Event event;
 			while ( m_window.pollEvent( event ) ) {
 				if ( event.type == sf::Event::Closed ) {
 					m_window.close();
-				}
+				} 
+				// moving current inventory window by 1
 				else if ( event.type == sf::Event::MouseWheelMoved ) {
 					mouse_moved = event.mouseWheel.delta;
 				}
+				else if ( event.type == sf::Event::MouseButtonPressed ) {
+					mouse_click_pos = sf::Mouse::getPosition( m_window );
+					mouse_clicked = true;
+				}
 			}
-			
+
 			sf::Time frameTime = m_frame_clock.restart();
-			// get input and move player
+
+			//GET INPUT && MOVE PLAYER
+			if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) ) {
+				m_map.check_for_destroying( sf::Mouse::getPosition( m_window ));
+			}
 			m_player.update();
 
 
-			// draw stuff
-			//rect.setPosition( m_player.position() );
-			//rect.setOutlineColor( sf::Color::Blue );
-			//rect.setOutlineThickness( 3 );
-			//rect.setFillColor( sf::Color::Transparent );
-			//rect.setSize( { (float)Config::Player::in_game_size, 
-			//			  (float)Config::Player::in_game_size } );
+			if ( mouse_clicked ) {
+				std::cout << mouse_click_pos.x << " " << mouse_click_pos.y << std::endl;
 
-
-
-			m_window.clear();
-			m_window.draw( m_sprite_background );
-			m_player.display_animation( frameTime );
+			}
+			
+			//VIEW
 			m_window.setView( m_view );
-			m_window.draw( rect );
-			for ( const auto& row : map ) {
+
+			//CLEAR 
+			m_window.clear();
+
+			//DRAWING
+			// draw background
+			m_window.draw( m_sprite_background );
+
+			// update player animation
+			m_player.display_animation( frameTime );
+
+			if constexpr ( DEBUG ) {
+				// draw line above the player
+				sf::Vertex line[] = { {{m_player.player_left_border( m_player.position() ), m_player.position().y}, sf::Color::Red},
+				{{m_player.player_right_border( m_player.position() ), m_player.position().y}, sf::Color::Red} };
+				rect.setPosition( m_player.position() );
+				m_window.draw( line, 2, sf::Lines );
+				m_window.draw( rect );
+			}
+
+			// draw player
+			m_window.draw( m_player.animations().animated_sprite() );
+
+			// draw blocks
+			for ( const auto& row : m_map.map() ) {
 				for ( const auto& block : row ) {
 					if ( block ) {
 						m_window.draw( block->sprite() );
 					}
 				}
 			}
+		
+			// center inventory to the center of the view
 			m_inventory.set_position( {m_view.getCenter()} );
+			
+			// set current inventory window
 			m_inventory.move( mouse_moved );
+
+			// draw inventory windows
 			for ( const auto& inventory_window : m_inventory.inventory() ) {
 				m_window.draw( inventory_window );
 			}
-			m_window.draw( m_player.animations().animated_sprite() );
+
 			m_window.display();
 			sf::sleep( sf::milliseconds( 5 ) );
 		}

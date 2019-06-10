@@ -17,9 +17,6 @@ class Player {
 public:
 	Player( sf::View& view, Map& map );
 
-	const Animation* current() const { return m_current; }
-	const Animations& animations() const { return m_animations; }
-	
 	void update();
 	void move_right();
 	void move_left();
@@ -28,6 +25,8 @@ public:
 	void display_animation( const sf::Time& frame_time );
 
 	//GETTERS
+	const Animation* current() const { return m_current; }
+	const Animations& animations() const { return m_animations; }
 	const sf::Vector2f& position() const;
 	const sf::Vector2f& velocity() const;
 	float player_right_border( const sf::Vector2f& pos ) const;
@@ -41,12 +40,12 @@ public:
 	bool hit_right_border() const;
 	void stop_moving();
 	void stop_view();
-
 private:
 	bool m_is_falling_from_block = false;
 	bool m_is_moving;
 	bool m_is_falling = false;
 	bool m_is_jumping = false;
+	bool m_block_up = false;
 	sf::Vector2f m_velocity; // player velocity
 	sf::Vector2f m_position; // player position
 	sf::Vector2f m_view_speed; 
@@ -56,5 +55,9 @@ private:
 	Map& m_map;	
 	int m_acceleration = Config::Player::acceleration.y;
 	int m_acceleration2 = Config::Player::acceleration.y;
+	int m_acceleration3 = Config::Player::acceleration.y;
+
 	Directions m_direction;
+	int index_x;
+	int index_y;
 };

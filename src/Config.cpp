@@ -9,10 +9,12 @@
 using namespace std::chrono_literals;
 
 //PLAYER
-const sf::Vector2f Config::Player::scale = { 2.f, 2.f };
-const sf::Vector2f Config::Player::acceleration = { 3.f, 9.f };
-const uint8_t Config::Player::sheet_size = 32;
-const int Config::Player::in_game_size = Config::Player::sheet_size * Config::Player::scale.x;
+const sf::Vector2f Config::Player::scale = { 1.f, 1.f };
+const sf::Vector2f Config::Player::acceleration = { 3.f, 8.f };
+const uint8_t Config::Player::sheet_size = 64;
+const int Config::Player::in_game_size = 64;
+const sf::Vector2f Config::Player::size = {32, 64};
+
 const sf::Vector3f Config::Player::from_player_border = { 12, 21, 22 };
 
 //WINDOW
@@ -28,7 +30,7 @@ const std::string Config::Path::background = "background.png";
 const std::string Config::Path::player_sprite = "sheet.png";
 
 //BACKGROUND
-const uint16_t Config::Background::width = 1280;
+const uint16_t Config::Background::width = 640;
 const uint16_t Config::Background::height = 480;
 
 //BORDERS
@@ -39,7 +41,7 @@ const uint16_t Config::Borders::right = Config::Background::width - Config::Play
 const uint8_t Config::Physics::gravity = 1;
 
 //ANIMATIONS
-const float Config::Animations::speed = 0.1f;
+const float Config::Animations::speed = 1.f;
 
 //TILES
 const sf::Vector2f Config::Tiles::scale = { 0.25f, 0.25f };
