@@ -49,6 +49,16 @@ $ No CMAKE_CXX_COMPILER could be found.
 ```bash
 $ sudo apt-get install g++
 ```
+
+### 4. Missing SFML
+```bash
+$ usr/bin/ld: warning: libopenal.so.1, needed by ../../SFML-2.5.1/lib/libsfml-audio.so.2.5.1, not found (try using -rpath or -rpath-link)
+```
+#### Solution ( Fedora )
+```bash
+sudo dnf install SFML
+```
+
 ## Game Sample
 ![Alt Text](https://media.giphy.com/media/7NGa55eqCUPP7Nks9x/giphy.gif)
 
