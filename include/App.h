@@ -21,7 +21,7 @@ public:
 		: m_window( sf::VideoMode( Config::Window::width, Config::Window::height ), Config::Window::title, sf::Style::Default )
 		, m_view( sf::FloatRect( 0.f, 0.f, 640.f, 480.f ) ) 
 		, m_player( m_view, m_map )
-		, m_map( m_player )
+		, m_map( m_player, m_inventory )
 	{
 		m_window.setFramerateLimit( 60 );
 		m_window.setView( m_view );
@@ -44,25 +44,30 @@ public:
 			rect.setSize( { (float)Config::Player::size.x,
 						  (float)Config::Player::size.y } );
 		}
+		m_inventory.add_to_inventory();
+
+		sf::RectangleShape mouse_rect;
+		mouse_rect.setSize( {32, 32} );
+		mouse_rect.setFillColor( sf::Color::Transparent );
+		mouse_rect.setOutlineColor( sf::Color::Black );
+		mouse_rect.setOutlineThickness( 1 );
+
+
 		while ( m_window.isOpen() ) {
 
 			// for mouse wheel detection
 			auto mouse_moved = 0;
-			sf::Vector2i mouse_click_pos = { 0, 0 };
-			bool mouse_clicked = false;
+
 
 			sf::Event event;
 			while ( m_window.pollEvent( event ) ) {
 				if ( event.type == sf::Event::Closed ) {
 					m_window.close();
 				} 
+
 				// moving current inventory window by 1
 				else if ( event.type == sf::Event::MouseWheelMoved ) {
 					mouse_moved = event.mouseWheel.delta;
-				}
-				else if ( event.type == sf::Event::MouseButtonPressed ) {
-					mouse_click_pos = sf::Mouse::getPosition( m_window );
-					mouse_clicked = true;
 				}
 			}
 
@@ -70,15 +75,13 @@ public:
 
 			//GET INPUT && MOVE PLAYER
 			if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) ) {
-				m_map.check_for_destroying( sf::Mouse::getPosition( m_window ));
+				m_map.destroy_block( sf::Mouse::getPosition( m_window ) );
+			
+			}
+			if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) ) {
+				m_map.create_block( sf::Mouse::getPosition( m_window ) );
 			}
 			m_player.update();
-
-
-			if ( mouse_clicked ) {
-				std::cout << mouse_click_pos.x << " " << mouse_click_pos.y << std::endl;
-
-			}
 			
 			//VIEW
 			m_window.setView( m_view );
@@ -105,6 +108,12 @@ public:
 			// draw player
 			m_window.draw( m_player.animations().animated_sprite() );
 
+			sf::Vector2f mouse_pos = { (float)sf::Mouse::getPosition( m_window ).x, (float)sf::Mouse::getPosition( m_window ).y };
+			mouse_pos.x = (int)mouse_pos.x / 32 * 32;
+			mouse_pos.y = (int)mouse_pos.y / 32 * 32;
+			mouse_rect.setPosition( mouse_pos.x, mouse_pos.y );
+			
+
 			// draw blocks
 			for ( const auto& row : m_map.map() ) {
 				for ( const auto& block : row ) {
@@ -114,6 +123,7 @@ public:
 				}
 			}
 		
+			m_window.draw( mouse_rect );
 			// center inventory to the center of the view
 			m_inventory.set_position( {m_view.getCenter()} );
 			

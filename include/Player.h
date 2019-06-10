@@ -40,6 +40,7 @@ public:
 	bool hit_right_border() const;
 	void stop_moving();
 	void stop_view();
+
 private:
 	bool m_is_falling_from_block = false;
 	bool m_is_moving;
