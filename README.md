@@ -21,7 +21,7 @@ $ cd src
 $ ./GoldMiner
 ```
 ## Troubleshooting
-#### 1. Forgot to add permissions 
+### 1. Forgot to add permissions 
 ```bash
 $ bash: ./SCRIPT_NAME: Permission denied
 ```
@@ -30,7 +30,7 @@ $ bash: ./SCRIPT_NAME: Permission denied
 $ chmod u+x SCRIPT_NAME
 ```
 
-#### 2. Bad interpreter error
+### 2. Bad interpreter error
 ```bash
 $ bash: ./run: /bin/bash^M: bad interpreter: No such file or directory
 ```
@@ -41,12 +41,11 @@ $ dos2unix install
 $ dos2unix run
 ```
 
-#### 3. No CMAKE_CXX_COMPILER could be found
+### 3. No CMAKE_CXX_COMPILER could be found
 ```bash
 $ No CMAKE_CXX_COMPILER could be found.
 ```
 #### Solution
-## Install g++
 ```bash
 $ sudo apt-get install g++
 ```
