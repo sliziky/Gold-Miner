@@ -28,7 +28,7 @@ bool Player::hit_left_border() const {
 }
 
 bool Player::hit_right_border() const {
-	return position().x + m_velocity.x + Config::Player::size.x > Config::Background::width;
+	return position().x + m_velocity.x + Config::Player::size.x >= Config::Background::width;
 }
 
 void Player::stop_moving() {
@@ -82,7 +82,6 @@ void Player::move_up() {
 	if ( m_is_jumping ) {
 		m_velocity.y -= m_acceleration;
 		m_acceleration -= Config::Physics::gravity;
-
 	}
 
 	const auto& map = m_map.map();
@@ -190,13 +189,13 @@ void Player::update() {
 	if ( collision_detection.collision == Collision::NO_BLOCK_UNDER ) {
 		m_is_falling_from_block = true;
 	}
-	if ( collision_detection.collision == Collision::BLOCK_PICKABLE ) {
-		m_map.map()[ collision_detection.index_y ][ collision_detection.index_x ].reset();
-	}
-	if ( collision_detection.collision == Collision::BLOCK_UNDER_PICKABLE ) {
-		m_is_falling_from_block = true;
-		m_map.map()[ collision_detection.index_y ][ collision_detection.index_x ].reset();
-	}
+	//if ( collision_detection.collision == Collision::BLOCK_PICKABLE ) {
+	//	m_map.map()[ collision_detection.index_y ][ collision_detection.index_x ].reset();
+	//}
+	//if ( collision_detection.collision == Collision::BLOCK_UNDER_PICKABLE ) {
+	//	m_is_falling_from_block = true;
+	//	m_map.map()[ collision_detection.index_y ][ collision_detection.index_x ].reset();
+	//}
 	if ( m_direction == Directions::Up &&  collision_detection.collision == Collision::BLOCK_ABOVE ) {
 		m_is_jumping = false;
 		m_is_falling = false;
