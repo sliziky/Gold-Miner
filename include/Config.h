@@ -11,6 +11,7 @@ struct Config {
 		static const uint8_t sheet_size;
 		static const int in_game_size;
 		static const sf::Vector3f from_player_border;
+		static const sf::Vector2f size;
 	};
 
 	struct Window {

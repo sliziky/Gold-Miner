@@ -4,5 +4,7 @@ enum class Directions {
 	Right,
 	Left,
 	Down,
-	Up
+	Up,
+	Idle,
+	Mouse_Pressed
 };
