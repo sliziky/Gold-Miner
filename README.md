@@ -30,7 +30,7 @@ $ bash: ./SCRIPT_NAME: Permission denied
 $ chmod u+x SCRIPT_NAME
 ```
 ## Game Sample
-![Alt Text](https://im.ezgif.com/tmp/ezgif-1-56e0ed00e950.gif)
+![Alt Text](https://media.giphy.com/media/7NGa55eqCUPP7Nks9x/giphy.gif)
 
 
 
