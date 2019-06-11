@@ -166,15 +166,15 @@ void Player::update() {
 	m_current = m_animations.idle_animation();
 	m_direction = Directions::Idle;
 
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Up ) ) {
+	if ( Input::Up_Key ) {
 		m_direction = Directions::Up;
 		m_is_jumping = true;
 	}
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) ) {
+	if ( Input::Right_Key ) {
 		m_direction = Directions::Right;
 		move_right();
 	}
-	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Left ) ) {
+	if ( Input::Left_Key ) {
 		m_direction = Directions::Left;
 		move_left();
 	}
@@ -184,32 +184,21 @@ void Player::update() {
 	BlockCollision collision_detection = m_map.check_for_collision( m_direction );
 	if ( collision_detection.collision == Collision::BLOCK_COLLISION ) {
 		stop_moving();
-		stop_view();
+		//stop_view();
 	}
 	if ( collision_detection.collision == Collision::NO_BLOCK_UNDER ) {
 		m_is_falling_from_block = true;
 	}
-	//if ( collision_detection.collision == Collision::BLOCK_PICKABLE ) {
-	//	m_map.map()[ collision_detection.index_y ][ collision_detection.index_x ].reset();
-	//}
-	//if ( collision_detection.collision == Collision::BLOCK_UNDER_PICKABLE ) {
-	//	m_is_falling_from_block = true;
-	//	m_map.map()[ collision_detection.index_y ][ collision_detection.index_x ].reset();
-	//}
+
 	if ( m_direction == Directions::Up &&  collision_detection.collision == Collision::BLOCK_ABOVE ) {
 		m_is_jumping = false;
 		m_is_falling = false;
 		m_velocity.y = 0.f;
-		//m_velocity = { 0, 0 };
-		//m_acceleration = Config::Player::acceleration.y;
+
 	}
+	// these two methods should be reworked
 	move_up(); // jumping
 	fall_down(); // falling from the block
-}
-
-
-void Player::stop_view() {
-	m_view_speed = { 0.f, 0.f };
 }
 
 const sf::Vector2f& Player::position() const { 

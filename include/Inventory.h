@@ -12,9 +12,13 @@ public:
 	//GETTERS
 	const std::vector< sf::RectangleShape >& inventory() const;
 	const sf::RectangleShape* current() const { return m_current; }
-	
+	const sf::Texture* current_item() const { return m_current->getTexture(); }
+	bool current_window_empty() const { return current_item() == nullptr; }
+
+
 	//SETTERS
 	void set_position( const sf::Vector2f& pos );
+
 
 	void add_to_inventory();
 	void move( int moved_by );

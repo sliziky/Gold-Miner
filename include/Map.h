@@ -13,7 +13,7 @@ class Player;
 class Map {
 	using Row = std::vector< std::unique_ptr< Block >>;
 public:
-	Map( Player& player, Inventory& inv );
+	Map( Player& player, Inventory& inv, sf::RenderWindow& rw );
 
 	//GETTERS
 	std::vector< std::vector< std::unique_ptr< Block >> >& map() { return m_blocks; }
@@ -34,8 +34,9 @@ public:
 	struct BlockCollision check_for_collision( const Directions& ) const;
 
 	bool block_exists_at( int row, int col ) const;
-
+	void update();
 private:
+	sf::RenderWindow& m_window;
 	Player& m_player;
 	std::vector < Row > m_blocks;
 	GameObjectFactory m_factory;

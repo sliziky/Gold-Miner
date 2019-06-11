@@ -1,9 +1,3 @@
-#include <SFML/Graphics.hpp>
-
-#include "Player.h"
-#include "Config.h"
-#include "..//thirdparty/animation/src/AnimatedSprite.h"
-#include "Animations.h"
 #include "App.h"
 
 int main() {

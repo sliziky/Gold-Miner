@@ -10,6 +10,8 @@
 #include "Map.h"
 #include "Directions.h"
 #include "Collision.h"
+#include "Input.h"
+
 class Map;
 
 class Player {
@@ -39,7 +41,7 @@ public:
 	bool hit_left_border() const;
 	bool hit_right_border() const;
 	void stop_moving();
-	void stop_view();
+	//void stop_view();
 
 private:
 	bool m_is_falling_from_block = false;

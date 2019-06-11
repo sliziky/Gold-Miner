@@ -5,6 +5,7 @@
 
 #include <vector>
 
+
 #include "Player.h"
 #include "Config.h"
 #include "..//thirdparty/animation/src/AnimatedSprite.h"
@@ -12,7 +13,11 @@
 #include "Map.h"
 #include "Utils.h"
 #include "Inventory.h"
+#include "Utils.h"
+#include "Input.h"
 
+
+//debug settings
 constexpr int DEBUG = 1;
 
 class App {
@@ -21,20 +26,25 @@ public:
 		: m_window( sf::VideoMode( Config::Window::width, Config::Window::height ), Config::Window::title, sf::Style::Default )
 		, m_view( sf::FloatRect( 0.f, 0.f, 640.f, 480.f ) ) 
 		, m_player( m_view, m_map )
-		, m_map( m_player, m_inventory )
+		, m_map( m_player, m_inventory, m_window )
 	{
+
 		m_window.setFramerateLimit( 60 );
 		m_window.setView( m_view );
-		m_background.loadFromFile( Config::Path::background );
 		m_player_texture.loadFromFile( Config::Path::player_sprite );
+
+		// adding background
+		m_background.loadFromFile( Config::Path::background );
 		m_sprite_background.setTexture( m_background );
 		m_sprite_background.setPosition( 0, 0 );
+
+		// world creating
 		m_map.generate_map();
 
 	}
 
 	void run() {
-		// testing row
+
 		sf::RectangleShape rect;
 		if constexpr ( DEBUG ) {
 			// draw rect around the player
@@ -46,6 +56,7 @@ public:
 		}
 		m_inventory.add_to_inventory();
 
+		//rectangle around mouse pointer
 		sf::RectangleShape mouse_rect;
 		mouse_rect.setSize( {32, 32} );
 		mouse_rect.setFillColor( sf::Color::Transparent );
@@ -73,14 +84,9 @@ public:
 
 			sf::Time frameTime = m_frame_clock.restart();
 
-			//GET INPUT && MOVE PLAYER
-			if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) ) {
-				m_map.destroy_block( sf::Mouse::getPosition( m_window ) );
-			
-			}
-			if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) ) {
-				m_map.create_block( sf::Mouse::getPosition( m_window ) );
-			}
+			check_input();
+
+			m_map.update();
 			m_player.update();
 			
 			//VIEW
@@ -109,19 +115,13 @@ public:
 			m_window.draw( m_player.animations().animated_sprite() );
 
 			sf::Vector2f mouse_pos = { (float)sf::Mouse::getPosition( m_window ).x, (float)sf::Mouse::getPosition( m_window ).y };
-			mouse_pos.x = (int)mouse_pos.x / 32 * 32;
-			mouse_pos.y = (int)mouse_pos.y / 32 * 32;
-			mouse_rect.setPosition( mouse_pos.x, mouse_pos.y );
-			
+			// mouse_pos.x = (int)mouse_pos.x / 32 * 32;
+			// mouse_pos.y = (int)mouse_pos.y / 32 * 32;
+			// mouse_rect.setPosition( mouse_pos.x, mouse_pos.y );
+			mouse_rect.setPosition( Utils::round_position( mouse_pos ) );
 
 			// draw blocks
-			for ( const auto& row : m_map.map() ) {
-				for ( const auto& block : row ) {
-					if ( block ) {
-						m_window.draw( block->sprite() );
-					}
-				}
-			}
+			draw_blocks();
 		
 			m_window.draw( mouse_rect );
 			// center inventory to the center of the view
@@ -131,14 +131,71 @@ public:
 			m_inventory.move( mouse_moved );
 
 			// draw inventory windows
-			for ( const auto& inventory_window : m_inventory.inventory() ) {
-				m_window.draw( inventory_window );
-			}
+			draw_inventory();
 
+			//display rendered items
 			m_window.display();
+
+			reset_states();
 			sf::sleep( sf::milliseconds( 5 ) );
 		}
 	}
+
+	void draw_blocks() {
+		const auto& map = m_map.map();
+		for ( const auto& row : map ) {
+			for ( const auto& block : row ) {
+				if ( block ) {
+					m_window.draw( block->sprite() );
+				}
+			}
+		}
+	}
+
+	void draw_inventory() {
+		for ( const auto& inventory_window : m_inventory.inventory() ) {
+			m_window.draw( inventory_window );
+		}
+	}
+
+	void check_input() {
+
+		// mouse left button
+		if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) ) {
+			Mouse::position = sf::Mouse::getPosition( m_window );
+			Input::Mouse_Left = true;
+		}
+		
+		// mouse right button
+		if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) ) {
+			Mouse::position = sf::Mouse::getPosition( m_window );
+			Input::Mouse_Right = true;
+		}
+
+		// left key
+		if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Left ) ) {
+			Input::Left_Key = true;
+		}
+
+		// right key
+		if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Right ) ) {
+			Input::Right_Key = true;
+		}
+
+		// up key
+		if ( sf::Keyboard::isKeyPressed( sf::Keyboard::Up) ) {
+			Input::Up_Key = true;
+		}	
+	}
+
+	void reset_states() {
+		Input::Left_Key = false;
+		Input::Right_Key = false;
+		Input::Up_Key = false;
+		Input::Mouse_Left = false;
+		Input::Mouse_Right = false;
+	}
+
 private:
 	sf::RenderWindow m_window;
 	Player m_player;
