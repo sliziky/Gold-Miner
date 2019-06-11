@@ -1,9 +1,14 @@
 #include "Map.h"
 #include "Config.h"
 #include "Collision.h"
-Map::Map( Player& player , Inventory& inv )
+#include "Utils.h"
+
+#include <iostream>
+
+Map::Map( Player& player , Inventory& inv, sf::RenderWindow& rw )
 	: m_player( player )
 	, m_inventory( inv )
+	, m_window( rw )
 {
 	sf::Texture text;
 	text.loadFromFile( "background.png" );
@@ -29,12 +34,6 @@ struct BlockCollision Map::check_for_collision( const Directions& direction ) co
 		return check_for_collision_left();		
 	}
 
-	//if ( direction == Directions::Up ) {
-	//	return check_for_collision_up();
-	//}
-	//if ( direction == Directions::Idle ) {
-	//	return check_for_collision_idle();
-	//}
 	return { Collision::NO_COLLISION, 0, 0 };
 }
 
@@ -59,37 +58,7 @@ struct BlockCollision Map::check_for_collision_left() const {
 
 	return { Collision::NO_COLLISION, 0, 0 };
 }
-//
-//
-//struct BlockCollision Map::check_for_collision_idle() const {
-//	const auto& player_position = m_player.position();
-//	const auto& player_velocity = m_player.velocity();
-//	auto new_pos = player_position + player_velocity;
-//	auto index_x = static_cast<int>(m_player.player_left_border( new_pos )) / Config::Block::size;
-//	auto index_y = static_cast<int>(Config::Window::height - new_pos.y + Config::Player::size.y) / Config::Block::size;
-//	if ( !block_exists_at( index_y, index_x ) ) {
-//		return { Collision::NO_BLOCK_UNDER, index_x, index_y };
-//	}
-//
-//}
-//
-//struct BlockCollision Map::check_for_collision_up() const {
-//	const auto& player_position = m_player.position();
-//	const auto& player_velocity = m_player.velocity();
-//	auto new_pos = player_position + player_velocity;
-//	auto index_x = static_cast<int>(m_player.player_left_border( new_pos ) + 1) / Config::Block::size;
-//	auto index_y = static_cast<int>(Config::Window::height - new_pos.y) / Config::Block::size;
-//	if ( block_exists_at( index_y, index_x ) ) {
-//	std::cout << "Index of blocking block " << index_x << std::endl;
-//		return { Collision::BLOCK_ABOVE, index_x, index_y };
-//	}
-//	//index_x = static_cast<int>(m_player.player_right_border( new_pos )) / Config::Block::size;
-//	//if ( block_exists_at( index_y, index_x ) ) {
-//	//	return { Collision::BLOCK_ABOVE, index_x, index_y };
-//	//}
-//	return {Collision::NO_COLLISION, 0, 0};
-//}
-//
+
 struct BlockCollision Map::check_for_collision_right() const {
 	const auto& player_position = m_player.position();
 	const auto& player_velocity = m_player.velocity();
@@ -136,24 +105,34 @@ void Map::generate_map() {
 	}
 }
 
-void Map::destroy_block( const sf::Vector2i& pos ) {
-	//auto index_x = static_cast<int>(pos.x) / Config::Block::size * Config::Block::size;
-	//auto index_y = static_cast<int>(Config::Window::height - pos.y) / Config::Block::size * Config::Block::size;
-	auto index_x = static_cast< int >(pos.x) / Config::Block::size;
-	auto index_y = static_cast< int >(Config::Window::height - pos.y - 1) / Config::Block::size;
+void Map::update() {
+	if ( Input::Mouse_Left ) {
+		destroy_block( Mouse::position  );	
+	}
+	if ( Input::Mouse_Right ) {
+		create_block( Mouse::position );
+	}
+}
+
+void Map::destroy_block( const sf::Vector2i& block_pos ) {
+	
+	auto index_x = static_cast< int >( block_pos.x ) / Config::Block::size;
+	auto index_y = static_cast< int >( Config::Window::height - block_pos.y - 1) / Config::Block::size;
 	if ( block_exists_at( index_y, index_x ) ) {
 		m_blocks[ index_y ][ index_x ].reset();
 	}
 }
 
-void Map::create_block( const sf::Vector2i& pos ) {
-	//auto index_x = static_cast<int>(pos.x) / Config::Block::size * Config::Block::size;
-	//auto index_y = static_cast<int>(Config::Window::height - pos.y) / Config::Block::size * Config::Block::size;
-	auto index_x = static_cast<int>(pos.x) / Config::Block::size;
-	auto index_y = static_cast<int>(Config::Window::height - pos.y - 1) / Config::Block::size;
-	std::cout << index_y << std::endl;
-	sf::Vector2f p = { (float)pos.x, (float)pos.y };
-	if ( !block_exists_at( index_y, index_x ) && m_inventory.current()->getTexture() != nullptr ) {
-		m_blocks[ index_y ][ index_x ] = m_factory.create_dirt( p );
+void Map::create_block( const sf::Vector2i& block_pos ) {
+	
+	auto index_x = static_cast< int >( block_pos.x) / Config::Block::size;
+	auto index_y = static_cast< int >( Config::Window::height - block_pos.y - 1) / Config::Block::size;
+	
+	// create dirt requires float vector2
+	sf::Vector2f block_pos_float = static_cast< sf::Vector2f >( block_pos );
+
+	// if position is empty and current chosen inventory window is not empty
+	if ( !block_exists_at( index_y, index_x ) && !m_inventory.current_window_empty() ) {
+		m_blocks[ index_y ][ index_x ] = m_factory.create_dirt( block_pos_float );
 	}
 }
