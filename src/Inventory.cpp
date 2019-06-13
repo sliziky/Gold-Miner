@@ -15,6 +15,19 @@ const std::vector< InventoryWindow >& Inventory::inventory() const {
 	return m_windows;
 }
 
+const InventoryWindow* Inventory::current_window() const {
+	return m_current_window;
+}
+
+const sf::Texture* Inventory::current_window_texture() const {
+	return m_current_window->texture();
+}
+
+bool Inventory::current_window_empty() const {
+	return current_window_texture() == nullptr;
+}
+
+
 void Inventory::set_position( const sf::Vector2f& pos ) {
 	for ( int i = 0; i < Config::Inventory::number_of_windows; ++i ) {
 		m_windows[ i ].set_position( { pos.x + i * 42 - Config::Window::width / 4 , 10.f } );
