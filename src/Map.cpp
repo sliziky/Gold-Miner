@@ -133,7 +133,7 @@ void Map::create_block( const sf::Vector2i& block_pos ) {
 
 	// if position is empty and current chosen inventory window is not empty
 	if ( !block_exists_at( index_y, index_x ) && !m_inventory.current_window_empty() ) {
-		m_blocks[ index_y ][ index_x ] = m_factory.create_block( *m_inventory.current_item()
+		m_blocks[ index_y ][ index_x ] = m_factory.create_block( *m_inventory.current_window_texture()
 																,Utils::round_position(block_pos_float) );
 	}
 }

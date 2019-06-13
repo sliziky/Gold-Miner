@@ -12,9 +12,9 @@ public:
 
 	//GETTERS
 	const std::vector< InventoryWindow >& inventory() const;
-	const InventoryWindow* current() const { return m_current_window; }
-	const sf::Texture* current_item() const { return m_current_window->texture(); }
-	bool current_window_empty() const { return current_item() == nullptr; }
+	const InventoryWindow* current_window() const;
+	const sf::Texture* current_window_texture() const;
+	bool current_window_empty() const;
 
 	//SETTERS
 	void set_position( const sf::Vector2f& pos );
