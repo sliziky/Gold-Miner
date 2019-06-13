@@ -54,7 +54,7 @@ public:
 			rect.setSize( { (float)Config::Player::size.x,
 						  (float)Config::Player::size.y } );
 		}
-		m_inventory.add_to_inventory();
+		m_inventory.add_to_inventory("grass");
 
 		//rectangle around mouse pointer
 		sf::RectangleShape mouse_rect;
@@ -89,6 +89,15 @@ public:
 			m_map.update();
 			m_player.update();
 			
+
+			//DEBUG
+			if ( sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
+				m_inventory.add_to_inventory("sand");
+			}
+
+			//DEBUG
+
+
 			//VIEW
 			m_window.setView( m_view );
 
@@ -154,7 +163,7 @@ public:
 
 	void draw_inventory() {
 		for ( const auto& inventory_window : m_inventory.inventory() ) {
-			m_window.draw( inventory_window );
+			m_window.draw( inventory_window.window() );
 		}
 	}
 

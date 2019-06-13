@@ -74,7 +74,7 @@ struct BlockCollision Map::check_for_collision_right() const {
 	auto index_x_right_b = static_cast< int >(m_player.player_right_border( new_pos )) / Config::Block::size;
 	auto index_x_left_b  = static_cast<int>(m_player.player_left_border( new_pos )) / Config::Block::size;
 	auto index_x_mid = (m_player.player_left_border( new_pos ) + Config::Player::size.x / 2) / Config::Block::size;
-	std::cout << index_y_feet << std::endl;
+
 	if ( block_exists_at( index_y_feet, index_x_right_b ) || block_exists_at( index_y_face, index_x_right_b ) ) {
 		return { Collision::BLOCK_COLLISION, index_x_right_b, index_y_feet };
 	}
@@ -133,6 +133,7 @@ void Map::create_block( const sf::Vector2i& block_pos ) {
 
 	// if position is empty and current chosen inventory window is not empty
 	if ( !block_exists_at( index_y, index_x ) && !m_inventory.current_window_empty() ) {
-		m_blocks[ index_y ][ index_x ] = m_factory.create_dirt( block_pos_float );
+		m_blocks[ index_y ][ index_x ] = m_factory.create_block( *m_inventory.current_item()
+																,Utils::round_position(block_pos_float) );
 	}
 }

@@ -5,7 +5,7 @@
 #include "Collision.h"
 class Block : public IGameObject {
 public:
-	Block( const std::string& file, const sf::Vector2f& pos );
+	Block( const sf::Texture& tex, const sf::Vector2f& pos );
 
 	
 
