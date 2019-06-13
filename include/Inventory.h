@@ -4,27 +4,26 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <map>
+#include "InventoryWindow.h"
 class Inventory {
 
 public:
 	Inventory();
 
 	//GETTERS
-	const std::vector< sf::RectangleShape >& inventory() const;
-	const sf::RectangleShape* current() const { return m_current; }
-	const sf::Texture* current_item() const { return m_current->getTexture(); }
+	const std::vector< InventoryWindow >& inventory() const;
+	const InventoryWindow* current() const { return m_current_window; }
+	const sf::Texture* current_item() const { return m_current_window->texture(); }
 	bool current_window_empty() const { return current_item() == nullptr; }
-
 
 	//SETTERS
 	void set_position( const sf::Vector2f& pos );
 
-
-	void add_to_inventory();
+	void add_to_inventory( const std::string& name );
 	void move( int moved_by );
+
 private:
-	std::vector< sf::RectangleShape > m_windows;
-	sf::RectangleShape* m_current = nullptr;
+	std::vector< InventoryWindow > m_windows;
+	InventoryWindow* m_current_window = nullptr;
 	int current_pos = 0;
-	std::unique_ptr < sf::Texture > tex;
 };

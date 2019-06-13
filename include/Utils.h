@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Config.h"
 
-class Utils {
-public:
+struct Utils {
     static sf::Vector2f round_position( const sf::Vector2f& position );
 };
 

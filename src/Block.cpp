@@ -1,13 +1,15 @@
 #include "Block.h"
 #include "Config.h"
-Block::Block( const std::string& file, const sf::Vector2f& pos )
+
+#include "TextureHolder.h"
+
+Block::Block( const sf::Texture& texture, const sf::Vector2f& pos )
 	: m_position( pos ) 
 {
-	m_texture.loadFromFile( file );
-	
+
 	// default texture is 64x64 but we want 32x32
 	m_sprite.setScale( Config::Tiles::scale );
-	m_sprite.setTexture( m_texture );
+	m_sprite.setTexture( texture );
 	m_sprite.setPosition( m_position );
 }
 
