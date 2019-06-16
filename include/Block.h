@@ -6,6 +6,8 @@
 class Block : public IGameObject {
 public:
 	Block( const sf::Texture& tex, const sf::Vector2f& pos );
+	Block( const sf::Texture& tex, const sf::Vector2i& pos );
+
 
 	
 

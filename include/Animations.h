@@ -3,17 +3,21 @@
 #include "Config.h"
 class Animations {
 public:
-	//GETTERS
-
 	Animations();
+	
+	//GETTERS
 	Animation* left_animation();
 	const Animation* left_animation() const;
+	
 	Animation* right_animation();
 	const Animation* right_animation() const;
+	
 	Animation* idle_animation();
 	const Animation* idle_animation() const;
+	
 	const AnimatedSprite& animated_sprite() const;
 	AnimatedSprite& animated_sprite();
+	
 	const sf::Vector2f& position() const { return m_animated_sprite.getPosition(); }
 
 	

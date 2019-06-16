@@ -13,6 +13,13 @@ Block::Block( const sf::Texture& texture, const sf::Vector2f& pos )
 	m_sprite.setPosition( m_position );
 }
 
+Block::Block( const sf::Texture& texture, const sf::Vector2i& pos )
+	: Block( texture, static_cast<sf::Vector2f>(pos) ) 
+{
+}
+
+
+
 //GETTERS
 const sf::Sprite& Block::sprite() const { return m_sprite; }
 const sf::Vector2f& Block::position() const { return m_position; }

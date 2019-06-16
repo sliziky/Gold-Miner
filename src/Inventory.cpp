@@ -9,6 +9,8 @@ Inventory::Inventory() {
 	// current chosen window
 	m_current_window = &m_windows[ current_pos ];
 	m_current_window->set_outline_color( sf::Color::Red );
+	m_current_window->set_outline_thickness( 5 );
+
 
 }
 const std::vector< InventoryWindow >& Inventory::inventory() const {
@@ -46,15 +48,15 @@ void Inventory::move( int moved_by ) {
 	current_pos += moved_by;
 
 	// if we are behind last window, go to first
-	if ( current_pos == Config::Inventory::number_of_windows ) { current_pos = 0; }
+	if ( current_pos >= Config::Inventory::number_of_windows ) { current_pos = 0; }
 	// if we are before first, go to last
-	if ( current_pos == -1 ) { current_pos = Config::Inventory::number_of_windows - 1; }
+	if ( current_pos < 0 ) { current_pos = Config::Inventory::number_of_windows - 1; }
 
 	// set old window to "normal"
 	m_current_window->set_outline_thickness( Config::Inventory::thickness );
 	m_current_window->set_outline_color( Config::Inventory::outline_color );
 	m_current_window = &m_windows[ current_pos ];
-	// update new window
+	// update curren to new window
 	m_current_window->set_outline_thickness( 5 );
 	m_current_window->set_outline_color( sf::Color::Red );
 

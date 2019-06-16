@@ -8,6 +8,11 @@ std::unique_ptr< Block > GameObjectFactory::create_block( const sf::Texture& nam
 	return std::make_unique< Block >( name, pos );
 }
 
+std::unique_ptr< Block > GameObjectFactory::create_block( const sf::Texture& name, const sf::Vector2i& pos ) const {
+	return std::make_unique< Block >( name, pos );
+}
+
+
 //GRASS
 std::unique_ptr< Block > GameObjectFactory::create_grass( const sf::Vector2f& pos ) const {
 	return std::make_unique< Block >( TextureHolder::texture("grass"), Utils::round_position(pos) );
