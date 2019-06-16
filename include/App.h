@@ -95,7 +95,7 @@ public:
 				m_inventory.add_to_inventory("sand");
 			}
 
-			//DEBUG
+			
 
 
 			//VIEW
@@ -132,7 +132,10 @@ public:
 			// draw blocks
 			draw_blocks();
 		
-			m_window.draw( mouse_rect );
+			// if the mouse is withing range
+			if ( Utils::distance( m_player.position(), static_cast<sf::Vector2i>(mouse_pos) ) <= 3 ) {
+				m_window.draw( mouse_rect );
+			}
 			// center inventory to the center of the view
 			m_inventory.set_position( {m_view.getCenter()} );
 			
@@ -178,6 +181,7 @@ public:
 		// mouse right button
 		if ( sf::Mouse::isButtonPressed( sf::Mouse::Right ) ) {
 			Mouse::position = sf::Mouse::getPosition( m_window );
+			std::cout << Mouse::position.x << " " << Mouse::position.y << " " << m_player.position().x << " " << m_player.position().y << std::endl;
 			Input::Mouse_Right = true;
 		}
 

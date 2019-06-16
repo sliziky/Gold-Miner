@@ -12,10 +12,10 @@ using namespace std::chrono_literals;
 const sf::Vector2f Config::Player::scale = { 1.f, 1.f };
 const sf::Vector2f Config::Player::acceleration = { 3.f, 8.f };
 const uint8_t Config::Player::sheet_size = 64;
-const int Config::Player::in_game_size = 64;
-const sf::Vector2f Config::Player::size = {32, 64};
+const int Config::Player::in_game_size = Config::Player::size.y * Config::Player::scale.y;
+const sf::Vector2f Config::Player::size = {24, 58};
 
-const sf::Vector3f Config::Player::from_player_border = { 12, 21, 22 };
+//const sf::Vector3f Config::Player::from_player_border = { 12, 21, 22 };
 
 //WINDOW
 const uint16_t Config::Window::width = 640;

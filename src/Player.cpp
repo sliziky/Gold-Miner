@@ -88,29 +88,37 @@ void Player::move_up() {
 	auto new_pos = position() + m_velocity;
 	auto index_x_left = (int)( player_left_border( new_pos ) ) / Config::Block::size;
 	auto index_x_right = (int)( player_right_border( new_pos ) ) / Config::Block::size;
+	auto index_y_above = (int)(Config::Window::height - new_pos.y) / Config::Block::size;
 	index_y = (int)( Config::Window::height - new_pos.y - Config::Player::size.y/2 ) / Config::Block::size;
 
+	//block above
+	if ( map[ index_y + 1 ][ index_x_right ] != nullptr 
+		 || map[ index_y + 1 ][ index_x_left ] != nullptr ) 
+	{
+		m_velocity.y = 0;
+	}
 	// ground or block under
-	if ( m_is_falling 
+	else if ( m_is_falling 
 		 && ( index_y == 0 
-		 ||  map[ index_y - 1 ][ index_x_left ] != nullptr 
-		 ||  map[ index_y - 1 ][ index_x_right ] != nullptr )) {
+		 || (  map[ index_y - 1 ][ index_x_left ] != nullptr 
+		 ||  map[ index_y - 1 ][ index_x_right  ] != nullptr ) )) {
 		// hit the ground
 		if ( index_y == 0 ) {
-			m_animations.animated_sprite().setPosition( position().x, 416 );
+			m_animations.animated_sprite().setPosition( position().x, Config::Window::height - Config::Player::size.y );
 		}
 		// hit the block
 		else {
-			sf::Vector2f pos;
+			sf::Vector2f block_pos;
 			//get the position of the block
 			if ( m_map.block_exists_at( index_y - 1, index_x_left )) {
-				pos = map[ index_y - 1 ][ index_x_left ]->position();
+				block_pos = map[ index_y - 1 ][ index_x_left ]->position();
 			}
 			if ( m_map.block_exists_at( index_y - 1, index_x_right ) ) {
-				pos = map[ index_y - 1 ][ index_x_right ]->position();
+				block_pos = map[ index_y - 1 ][ index_x_right ]->position();
 			}
-			// place player above the block
-			m_animations.animated_sprite().setPosition( position().x, pos.y - 2 * Config::Block::size );
+
+			// place player on the block
+			m_animations.animated_sprite().setPosition( position().x, block_pos.y  - Config::Player::size.y );
 		}
 
 		m_is_jumping = false;
@@ -132,31 +140,32 @@ void Player::fall_down() {
 	const auto& map = m_map.map();
 	auto new_pos = position() + m_velocity;
 
-	// index depends whether we go right or left
-	int index_x;
+	int index_x_left = static_cast< int >( player_left_border(position())) / Config::Block::size;
+	int index_x_right = static_cast< int >( player_right_border(position())) / Config::Block::size;
 
-	if ( m_direction == Directions::Right ) {
-		index_x = static_cast< int >( player_left_border(position()) - Config::Block::size ) / Config::Block::size;
-	}
-	if ( m_direction == Directions::Left ) {
-		index_x = static_cast< int >( player_right_border(position()) - Config::Block::size ) / Config::Block::size;
-	}
 	index_y = (int)(Config::Window::height - new_pos.y - Config::Player::size.y) / Config::Block::size;
 
-	if ( m_block_up || m_is_falling_from_block && (index_y == 0 || map[ index_y - 1 ][ index_x ] != nullptr) ) {
-		// hit the ground
+	if ( m_is_falling_from_block ) {
+
+		 // hit the ground
 		if ( index_y == 0 ) {
-			m_animations.animated_sprite().setPosition( position().x, 416 );
+			m_animations.animated_sprite().setPosition( position().x, Config::Window::height - Config::Player::size.y );
+			m_block_up = false;
+			m_is_falling_from_block = false;
+			m_velocity.y = 0;
+			m_acceleration2 = Config::Player::acceleration.y;
 		}
 		// hit the block
-		else {
-			auto pos = map[ index_y - 1 ][ index_x ]->position();
-			m_animations.animated_sprite().setPosition( position().x, pos.y - 64);
+		else if ( map[ index_y - 1 ][ index_x_left ] != nullptr && map[ index_y - 1 ][ index_x_right ] != nullptr ) {
+			auto block_pos = map[ index_y - 1 ][ index_x_left ]->position();
+			m_animations.animated_sprite().setPosition( position().x, block_pos.y - Config::Player::size.y );
+			m_block_up = false;
+			m_is_falling_from_block = false;
+			m_velocity.y = 0;
+			m_acceleration2 = Config::Player::acceleration.y;
 		}
-		m_block_up = false;
-		m_is_falling_from_block = false;
-		m_velocity.y = 0;
-		m_acceleration2 = Config::Player::acceleration.y;
+
+		
 	}
 }
 
@@ -190,12 +199,8 @@ void Player::update() {
 		m_is_falling_from_block = true;
 	}
 
-	if ( m_direction == Directions::Up &&  collision_detection.collision == Collision::BLOCK_ABOVE ) {
-		m_is_jumping = false;
-		m_is_falling = false;
-		m_velocity.y = 0.f;
 
-	}
+	//}
 	// these two methods should be reworked
 	move_up(); // jumping
 	fall_down(); // falling from the block

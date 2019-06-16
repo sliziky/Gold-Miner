@@ -33,6 +33,8 @@ public:
 	struct BlockCollision check_for_collision_right() const;
 	struct BlockCollision check_for_collision( const Directions& ) const;
 
+	bool intersects( int y, int x ) const;
+
 	bool block_exists_at( int row, int col ) const;
 	void update();
 private:
